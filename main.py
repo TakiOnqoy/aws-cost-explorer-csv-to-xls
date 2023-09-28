@@ -8,15 +8,17 @@ with open('costs.csv', mode='r') as csv_file:
     cost = next(csv_reader)
 
 # Remove '($)' from 'Service' list items
-cleaned_service = [item.replace('($)', '') for item in service]
+cleaned_service = [''.join(char for char in item if char.isalnum() or char.isspace()) for item in service]
 # Uses double-digit floats
 converted_costs = []
 for value in cost:
     try:
         float_value = float(value)
+        formatted_value = "{:.2f}".format(float_value)
     except ValueError:
-        float_value = value
-    converted_costs.append(float_value)
+        input_string = value
+        formatted_value = ''.join(char for char in input_string if char.isalnum() or char.isspace())
+    converted_costs.append(formatted_value)
 
 # Create a pandas DataFrame with 'Service' and 'Cost' columns
 df = pd.DataFrame({'Service': cleaned_service, 'Cost': converted_costs})
