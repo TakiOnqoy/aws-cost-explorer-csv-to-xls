@@ -9,12 +9,17 @@ with open('costs.csv', mode='r') as csv_file:
 
 # Remove '($)' from 'Service' list items
 cleaned_service = [item.replace('($)', '') for item in service]
-
 # Uses double-digit floats
-cost = [float(value) for value in cost]
+converted_costs = []
+for value in cost:
+    try:
+        float_value = float(value)
+    except ValueError:
+        float_value = value
+    converted_costs.append(float_value)
 
 # Create a pandas DataFrame with 'Service' and 'Cost' columns
-df = pd.DataFrame({'Service': cleaned_service, 'Cost': cost})
+df = pd.DataFrame({'Service': cleaned_service, 'Cost': converted_costs})
 
 # Define the output Excel file path
 excel_output_file_path = 'structured_costs.xlsx'
