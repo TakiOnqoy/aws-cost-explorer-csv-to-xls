@@ -10,6 +10,9 @@ with open('costs.csv', mode='r') as csv_file:
 # Remove '($)' from 'Service' list items
 cleaned_service = [item.replace('($)', '') for item in service]
 
+# Uses double-digit floats
+cost = [float(value) for value in cost]
+
 # Create a pandas DataFrame with 'Service' and 'Cost' columns
 df = pd.DataFrame({'Service': cleaned_service, 'Cost': cost})
 
