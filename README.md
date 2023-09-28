@@ -6,6 +6,8 @@ A versão atual pega os valores das primeiras duas colunas da UI do Cost Explore
 
 - garanta que python3 esteja instalado na máquina. caso contrário, baixe a versão correta para seu OS em https://www.python.org/downloads/
 
+- ative o venv para o código com ```source venv/bin/activate``` (linux) ou ```venv\Scripts\activate``` (windows)
+
 - ```pip install -r requirements.txt```
 
 - Baixe o arquivo para dentro da pasta do código com o nome ```costs.csv```
@@ -17,3 +19,9 @@ A versão atual pega os valores das primeiras duas colunas da UI do Cost Explore
 - recolha os dados de ```structured_costs.xls```
 
 - delete o arquivo ```structured_costs.xls``` após uso, para possibilitar a próxima conversão de CSV para XLS
+
+## Limitações
+
+- Atualmente o arquivo structured_costs.xls precisa ser excluído para funcionar
+
+- Os valores estão sendo passados 
