@@ -1,6 +1,7 @@
 import csv
 import pandas as pd
 import argparse
+import os
 
 def read_user_cli_args():
     parser = argparse.ArgumentParser(
@@ -56,11 +57,23 @@ def convert_into_xlsx(cleaned_service, converted_costs, excel_output_file_name):
 
     print(f"Data has been written to '{excel_output_file_name}'.")
 
+
+def delete_file(file_name):
+    """Delete a file with the given name."""
+    try:
+        os.remove(file_name)
+        print(f"'{file_name}' has been deleted.")
+    except OSError as e:
+        print(f"Error: {e}. Is the file open in another program?")
+
+
 def main():
     user_args = read_user_cli_args()
     service, cost = store_csv_lines(user_args.convert)
     cleaned_service, converted_costs = format_stored_values(service, cost)
     convert_into_xlsx(cleaned_service, converted_costs, user_args.output_file)
+    if user_args.clear:
+        delete_file(user_args.clear)
 
 if __name__ == "__main__":
     main()
