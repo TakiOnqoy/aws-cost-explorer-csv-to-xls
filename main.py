@@ -69,9 +69,10 @@ def delete_file(file_name):
 
 def main():
     user_args = read_user_cli_args()
-    service, cost = store_csv_lines(user_args.convert)
-    cleaned_service, converted_costs = format_stored_values(service, cost)
-    convert_into_xlsx(cleaned_service, converted_costs, user_args.output_file)
+    if user_args.convert:
+        service, cost = store_csv_lines(user_args.convert)
+        cleaned_service, converted_costs = format_stored_values(service, cost)
+        convert_into_xlsx(cleaned_service, converted_costs, user_args.output_file)
     if user_args.clear:
         delete_file(user_args.clear)
 
