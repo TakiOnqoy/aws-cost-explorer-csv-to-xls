@@ -11,19 +11,33 @@ def read_user_cli_args():
     )
 
     parser.add_argument(
-        "convert", nargs="?", type=str, default='costs.csv', help="Enter the name of the CSV file that should be converted. Defaults to 'costs.csv' if not defined."
+        "convert", nargs="?", type=str, help="Enter the name of the CSV file that should be converted."
     )
     parser.add_argument(
-        "clear", nargs="?", type=str, default='structured_costs.xlsx', help="Enter the name of the XLSx file that should be removed from app directory. Defaults to 'structured_costs.csv' if not defined."
+        "clear", nargs="?", type=str, help="Enter the name of the XLSx file that should be removed from app directory."
+    )
+    parser.add_argument(
+        "-d",
+        "--default",
+        action="store_true",
+        help="Set the name of files to default values: 'cost.csv' for input file and 'structured_costs.xlsx' to output file",
     )
     parser.add_argument(
         "-o",
         "--output-file",
         nargs="?",
-        default='structured_costs.xlsx',
-        help="Defines the name of the output file. Defaults to 'structured_costs.xlsx'",
+        help="Defines the name of the output file.",
     )
     return parser.parse_args()
+
+def set_input_file_name(input_file_name, default=False):
+    if default:
+        input_file_name = 'costs.csv'
+    return input_file_name
+def set_output_file_name(output_file_name, default=False):
+    if default:
+        output_file_name = 'structured_costs.xlsx'
+    return output_file_name
 
 def store_csv_lines(csv_file_name):
     # Open the CSV file downloaded from AWS Cost Explorer
@@ -42,10 +56,12 @@ def format_stored_values(service, cost):
         try:
             float_value = float(value)
             formatted_value = "{:.2f}".format(float_value)
+            converted_costs.append('$' + formatted_value)
         except ValueError:
             input_string = value
             formatted_value = ''.join(char for char in input_string if char.isalnum() or char.isspace())
-        converted_costs.append('$' + formatted_value)
+            converted_costs.append(formatted_value)
+
     return cleaned_service, converted_costs
 
 def convert_into_xlsx(cleaned_service, converted_costs, excel_output_file_name):
@@ -64,16 +80,19 @@ def delete_file(file_name):
         os.remove(file_name)
         print(f"'{file_name}' has been deleted.")
     except OSError as e:
-        print(f"Error: {e}. Is the file open in another program?")
+        print(f"Error: {e}.")
 
 
 def main():
     user_args = read_user_cli_args()
-    service, cost = store_csv_lines(user_args.convert)
-    cleaned_service, converted_costs = format_stored_values(service, cost)
-    convert_into_xlsx(cleaned_service, converted_costs, user_args.output_file)
+    input_file_name = set_input_file_name(user_args.convert, user_args.default)
+    output_file_name = set_output_file_name(user_args.clear, user_args.default)
+    if user_args.convert:
+        service, cost = store_csv_lines(input_file_name)
+        cleaned_service, converted_costs = format_stored_values(service, cost)
+        convert_into_xlsx(cleaned_service, converted_costs, output_file_name)
     if user_args.clear:
-        delete_file(user_args.clear)
+        delete_file(output_file_name)
 
 if __name__ == "__main__":
     main()
