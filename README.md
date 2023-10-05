@@ -18,7 +18,7 @@ A versão atual pega os valores das primeiras duas colunas da UI do Cost Explore
 
 - recolha os dados de ```structured_costs.xls```
 
-- delete o arquivo ```structured_costs.xls``` após uso, para possibilitar a próxima conversão de CSV para XLS
+- feche o arquivo ```structured_costs.xls``` após uso, para possibilitar a próxima conversão de CSV para XLS
 
 ## Limitações
 
