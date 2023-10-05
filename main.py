@@ -15,10 +15,12 @@ for value in cost:
     try:
         float_value = float(value)
         formatted_value = "{:.2f}".format(float_value)
+        converted_costs.append('$' + formatted_value)
     except ValueError:
         input_string = value
         formatted_value = ''.join(char for char in input_string if char.isalnum() or char.isspace())
-    converted_costs.append(formatted_value)
+        converted_costs.append(formatted_value)
+
 
 # Create a pandas DataFrame with 'Service' and 'Cost' columns
 df = pd.DataFrame({'Service': cleaned_service, 'Cost': converted_costs})
